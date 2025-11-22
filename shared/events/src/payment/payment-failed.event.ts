@@ -1,4 +1,4 @@
-import { PaymentStatus } from "@eventflow/common";
+import { PaymentStatus } from '@eventflow/common';
 
 export class PaymentFailedEvent {
   constructor(
@@ -8,5 +8,5 @@ export class PaymentFailedEvent {
     public readonly failureReason: string,
     public readonly status: PaymentStatus,
     public readonly timestamp: Date = new Date(),
-  ){}
+  ) {}
 }

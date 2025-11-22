@@ -9,9 +9,14 @@
     "build:common": "yarn workspace @eventflow/common build",
     "build:events": "yarn workspace @eventflow/events build",
     "build:utils": "yarn workspace @eventflow/utils build",
-    "build:shared": "yarn build:common && yarn build:events && yarn build:utils"
+    "build:shared": "yarn build:common && yarn build:events && yarn build:utils",
+    "format": "prettier --write \"**/*.{ts,tsx,js,jsx,json,md,yml,yaml}\"",
+    "format:check": "prettier --check \"**/*.{ts,tsx,js,jsx,json,md,yml,yaml}\"",
+    "format:shared": "prettier --write \"shared/**/*.{ts,tsx,js,jsx,json}\"",
+    "postinstall": "yarn build:shared"
   },
   "devDependencies": {
+    "prettier": "^3.6.2",
     "typescript": "^5.3.3"
   }
 }

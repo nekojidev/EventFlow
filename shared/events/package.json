@@ -8,7 +8,11 @@
     "build": "tsc",
     "prepublishOnly": "yarn build"
   },
-  "keywords": ["eventflow", "events", "rabbitmq"],
+  "keywords": [
+    "eventflow",
+    "events",
+    "rabbitmq"
+  ],
   "author": "",
   "license": "MIT",
   "devDependencies": {

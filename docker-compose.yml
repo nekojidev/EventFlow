@@ -10,13 +10,13 @@ services:
       POSTGRES_PASSWORD: ${POSTGRES_ORDER_PASSWORD:-order_pass}
       POSTGRES_DB: ${POSTGRES_ORDER_DB:-order_db}
     ports:
-      - "${POSTGRES_ORDER_PORT:-5432}:5432"
+      - '${POSTGRES_ORDER_PORT:-5432}:5432'
     volumes:
       - postgres_order_data:/var/lib/postgresql/data
     networks:
       - eventflow-network
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_ORDER_USER:-order_user}"]
+      test: ['CMD-SHELL', 'pg_isready -U ${POSTGRES_ORDER_USER:-order_user}']
       interval: 10s
       timeout: 5s
       retries: 5
@@ -29,13 +29,13 @@ services:
       POSTGRES_PASSWORD: ${POSTGRES_PAYMENT_PASSWORD:-payment_pass}
       POSTGRES_DB: ${POSTGRES_PAYMENT_DB:-payment_db}
     ports:
-      - "${POSTGRES_PAYMENT_PORT:-5433}:5432"
+      - '${POSTGRES_PAYMENT_PORT:-5433}:5432'
     volumes:
       - postgres_payment_data:/var/lib/postgresql/data
     networks:
       - eventflow-network
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_PAYMENT_USER:-payment_user}"]
+      test: ['CMD-SHELL', 'pg_isready -U ${POSTGRES_PAYMENT_USER:-payment_user}']
       interval: 10s
       timeout: 5s
       retries: 5
@@ -48,13 +48,13 @@ services:
       POSTGRES_PASSWORD: ${POSTGRES_INVENTORY_PASSWORD:-inventory_pass}
       POSTGRES_DB: ${POSTGRES_INVENTORY_DB:-inventory_db}
     ports:
-      - "${POSTGRES_INVENTORY_PORT:-5434}:5432"
+      - '${POSTGRES_INVENTORY_PORT:-5434}:5432'
     volumes:
       - postgres_inventory_data:/var/lib/postgresql/data
     networks:
       - eventflow-network
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_INVENTORY_USER:-inventory_user}"]
+      test: ['CMD-SHELL', 'pg_isready -U ${POSTGRES_INVENTORY_USER:-inventory_user}']
       interval: 10s
       timeout: 5s
       retries: 5
@@ -68,14 +68,14 @@ services:
       RABBITMQ_DEFAULT_PASS: ${RABBITMQ_PASSWORD:-admin123}
       RABBITMQ_DEFAULT_VHOST: ${RABBITMQ_VHOST:-/}
     ports:
-      - "${RABBITMQ_PORT:-5672}:5672"      # AMQP port
-      - "${RABBITMQ_MANAGEMENT_PORT:-15672}:15672"  # Management UI
+      - '${RABBITMQ_PORT:-5672}:5672' # AMQP port
+      - '${RABBITMQ_MANAGEMENT_PORT:-15672}:15672' # Management UI
     volumes:
       - rabbitmq_data:/var/lib/rabbitmq
     networks:
       - eventflow-network
     healthcheck:
-      test: ["CMD", "rabbitmq-diagnostics", "ping"]
+      test: ['CMD', 'rabbitmq-diagnostics', 'ping']
       interval: 10s
       timeout: 5s
       retries: 5
@@ -85,14 +85,14 @@ services:
     image: redis:7-alpine
     container_name: eventflow-redis
     ports:
-      - "${REDIS_PORT:-6379}:6379"
+      - '${REDIS_PORT:-6379}:6379'
     volumes:
       - redis_data:/data
     networks:
       - eventflow-network
     command: redis-server --appendonly yes
     healthcheck:
-      test: ["CMD", "redis-cli", "ping"]
+      test: ['CMD', 'redis-cli', 'ping']
       interval: 10s
       timeout: 5s
       retries: 5
@@ -107,5 +107,3 @@ volumes:
 networks:
   eventflow-network:
     driver: bridge
-
-

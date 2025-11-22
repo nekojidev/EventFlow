@@ -3,6 +3,6 @@ export class OrderCancelledEvent {
     public readonly orderId: string,
     public readonly userId: string,
     public readonly reason: string,
-    public readonly timestamp: Date = new Date()
+    public readonly timestamp: Date = new Date(),
   ) {}
 }

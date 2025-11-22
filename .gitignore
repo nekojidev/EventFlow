@@ -50,3 +50,21 @@ yarn-error.log*
 
 
 
+# TypeScript
+*.tsbuildinfo
+
+# Compiled files in src directories (should not be committed)
+shared/**/src/**/*.js
+shared/**/src/**/*.d.ts
+shared/**/src/**/*.js.map
+shared/**/src/**/*.d.ts.map
+
+# Also for future services and frontend
+services/**/src/**/*.js
+services/**/src/**/*.d.ts
+frontend/**/src/**/*.js
+frontend/**/src/**/*.d.ts
+
+# Misc
+.cache/
+.turbo/
