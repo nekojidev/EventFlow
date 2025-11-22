@@ -1,0 +1,20 @@
+{
+  "name": "@eventflow/events",
+  "version": "1.0.0",
+  "description": "Event definitions and schemas for EventFlow",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "prepublishOnly": "yarn build"
+  },
+  "keywords": ["eventflow", "events", "rabbitmq"],
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "typescript": "^5.3.3"
+  },
+  "dependencies": {
+    "@eventflow/common": "file:../common"
+  }
+}

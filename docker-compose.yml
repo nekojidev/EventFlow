@@ -1,0 +1,111 @@
+version: '3.8'
+
+services:
+  # PostgreSQL Databases (one per service for true decoupling)
+  postgres-order:
+    image: postgres:15-alpine
+    container_name: eventflow-postgres-order
+    environment:
+      POSTGRES_USER: ${POSTGRES_ORDER_USER:-order_user}
+      POSTGRES_PASSWORD: ${POSTGRES_ORDER_PASSWORD:-order_pass}
+      POSTGRES_DB: ${POSTGRES_ORDER_DB:-order_db}
+    ports:
+      - "${POSTGRES_ORDER_PORT:-5432}:5432"
+    volumes:
+      - postgres_order_data:/var/lib/postgresql/data
+    networks:
+      - eventflow-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_ORDER_USER:-order_user}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  postgres-payment:
+    image: postgres:15-alpine
+    container_name: eventflow-postgres-payment
+    environment:
+      POSTGRES_USER: ${POSTGRES_PAYMENT_USER:-payment_user}
+      POSTGRES_PASSWORD: ${POSTGRES_PAYMENT_PASSWORD:-payment_pass}
+      POSTGRES_DB: ${POSTGRES_PAYMENT_DB:-payment_db}
+    ports:
+      - "${POSTGRES_PAYMENT_PORT:-5433}:5432"
+    volumes:
+      - postgres_payment_data:/var/lib/postgresql/data
+    networks:
+      - eventflow-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_PAYMENT_USER:-payment_user}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  postgres-inventory:
+    image: postgres:15-alpine
+    container_name: eventflow-postgres-inventory
+    environment:
+      POSTGRES_USER: ${POSTGRES_INVENTORY_USER:-inventory_user}
+      POSTGRES_PASSWORD: ${POSTGRES_INVENTORY_PASSWORD:-inventory_pass}
+      POSTGRES_DB: ${POSTGRES_INVENTORY_DB:-inventory_db}
+    ports:
+      - "${POSTGRES_INVENTORY_PORT:-5434}:5432"
+    volumes:
+      - postgres_inventory_data:/var/lib/postgresql/data
+    networks:
+      - eventflow-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_INVENTORY_USER:-inventory_user}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # RabbitMQ - Message Broker
+  rabbitmq:
+    image: rabbitmq:3.12-management-alpine
+    container_name: eventflow-rabbitmq
+    environment:
+      RABBITMQ_DEFAULT_USER: ${RABBITMQ_USER:-admin}
+      RABBITMQ_DEFAULT_PASS: ${RABBITMQ_PASSWORD:-admin123}
+      RABBITMQ_DEFAULT_VHOST: ${RABBITMQ_VHOST:-/}
+    ports:
+      - "${RABBITMQ_PORT:-5672}:5672"      # AMQP port
+      - "${RABBITMQ_MANAGEMENT_PORT:-15672}:15672"  # Management UI
+    volumes:
+      - rabbitmq_data:/var/lib/rabbitmq
+    networks:
+      - eventflow-network
+    healthcheck:
+      test: ["CMD", "rabbitmq-diagnostics", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # Redis - Caching & Queue
+  redis:
+    image: redis:7-alpine
+    container_name: eventflow-redis
+    ports:
+      - "${REDIS_PORT:-6379}:6379"
+    volumes:
+      - redis_data:/data
+    networks:
+      - eventflow-network
+    command: redis-server --appendonly yes
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  postgres_order_data:
+  postgres_payment_data:
+  postgres_inventory_data:
+  rabbitmq_data:
+  redis_data:
+
+networks:
+  eventflow-network:
+    driver: bridge
+
+

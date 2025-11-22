@@ -1,0 +1,17 @@
+{
+  "name": "eventflow",
+  "version": "1.0.0",
+  "private": true,
+  "workspaces": [
+    "shared/*"
+  ],
+  "scripts": {
+    "build:common": "yarn workspace @eventflow/common build",
+    "build:events": "yarn workspace @eventflow/events build",
+    "build:utils": "yarn workspace @eventflow/utils build",
+    "build:shared": "yarn build:common && yarn build:events && yarn build:utils"
+  },
+  "devDependencies": {
+    "typescript": "^5.3.3"
+  }
+}
